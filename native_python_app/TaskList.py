@@ -1,4 +1,8 @@
+# -*- coding: utf-8 -*-
+import io
+
 from Task import Task
+import os
 class TaskList:
     """docstring for Task."""
 
@@ -13,6 +17,11 @@ class TaskList:
     def printTasks(self):
         for t in self.tasks:
             print(t)
+    def add(self, short, desc="dd", pos = False, state="t"):
+        if not pos:
+            pos = len(self.tasks)
+        t = Task(short=short, desc=desc, pos=pos, state=state)
+        self.tasks.append(t)
     def remove(self, pos):
         if pos > len(self.tasks):
             raise ValueError("Invalid remove position")
@@ -23,11 +32,11 @@ class TaskList:
                 t.pos = t.pos -1
 
     def writeTodoTasksToFile(self):
-        with open(self.path, "w") as fd:
+        with io.open(self.path, "w", encoding="utf-8") as fd:
             for t in self.tasks:
                 fd.write(t.storeTaskStr())
     def readTasksFromFile(self):
-        with open(self.path, "r") as f:
+        with io.open(self.path, "r", encoding="utf-8") as f:
             while True:
                 c = f.readline()
                 if not c:
@@ -39,28 +48,46 @@ class TaskList:
                 short = c[1:-1]
 
                 c = f.readline()
+                # print("Short: " + c)
                 if c[0] != chr(5):
                     continue
                 state = c[1:-1]
 
                 c = f.readline()
-
+                # print("Position: " + c)
                 if c[0] != chr(6):
                     continue
                 pos = c[1:-1]
 
                 c = f.readline()
+                # print("Desc: " + c)
                 if c[0] != chr(2):
                     continue
-                if c[-2] == chr(3): #One liner DESC
-                    desc = c[1:-2]
-                else:
-                    desc = c[1:-1]
-                    c = f.readline()
-                    while c[-2] != chr(3):
-                        desc = desc + c[:-1]
+                # print(ord(c[-1]))
+                if os.name == "posix":
+                    print(c[-2])
+                    print(c[-3])
+                    if c[-2] == chr(3): #One liner DESC
+                        desc = c[1:-3]
+                    else:
+                        desc = c[1:-1]
                         c = f.readline()
-                    desc = desc + c[1:-2]
+                        while c[-2] != chr(3):
+                            desc = desc + c[:-1]
+                            c = f.readline()
+                        desc = desc + c[1:-2]
 
-                t = Task(short=short, desc=desc, pos=pos, state=state)
-                self.tasks.append(t)
+                else:
+                    if c[-2] == chr(3): #One liner DESC
+                        desc = c[1:-2]
+                    else:
+                        desc = c[1:-1]
+                        c = f.readline()
+                        while c[-2] != chr(3):
+                            desc = desc + c[:-1]
+                            c = f.readline()
+                        desc = desc + c[1:-2]
+
+                self.add(short, desc, pos, state)
+                #t = Task(short=short, desc=desc, pos=pos, state=state)
+                #self.tasks.append(t)
