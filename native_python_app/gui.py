@@ -15,26 +15,45 @@ class Demo1:
         self.master.bind("t", self.new_task)
         self.master.bind("q", self.quit)
         self.master.bind("<Escape>", self.quit)
+        self.master.bind("<Delete>", self.remove)
         self.frame.pack()
         self.button1 = tk.Button(self.frame, text = 'New Task', width = 50, command = self.new_task)
         self.button1.pack()
         self.listboxes = []
+        self.active_listbox = None
         self.initListbox()
+
+    def set_active_listbox(self, n):
+        self.active_listbox = n
+    def remove(self, event = None):
+        if self.active_listbox == None:
+            return
+        a = self.listboxes[self.active_listbox].curselection()
+        #print(self.listboxes[self.active_listbox].curselection())
+        try:
+            self.brain.remove_from_list(self.listboxes[self.active_listbox].curselection()[0], self.active_listbox)
+            self.listboxes[self.active_listbox].delete(self.listboxes[self.active_listbox].curselection())
+        except IndexError:
+            return
 
     def new_task(self, _event = None):
         self.newTask = tk.Toplevel(self.master)
         self.app = Demo2(self.newTask, self)
 
     def initListbox(self):
+        inx = 0
         for tl in self.brain.getLists():
             w = tk.Label(self.master, text=tl.short)
             w.pack()
-            lbox = tk.Listbox(self.master, width=45)
+            lbox = tk.Listbox(self.master, width=45, selectmode=tk.BROWSE)
+            b = inx
             for t in tl.tasks:
                 print(t.short)
                 lbox.insert("end", str(t.short))
             lbox.pack()
             self.listboxes.append(lbox)
+            lbox.bind('<<ListboxSelect>>',lambda x, _inx = inx : self.set_active_listbox(_inx))
+            inx += 1
 
     def addToListbox(self, short):
         self.brain.add(short)
