@@ -38,8 +38,6 @@ class Demo1:
     def remove(self, event = None):
         if self.active_listbox == None:
             return
-        #a = self.listboxes[self.active_listbox].curselection()
-        #print(self.listboxes[self.active_listbox].curselection())
         try:
             self.brain.remove_from_list(self.listboxes[self.active_listbox].curselection()[0], self.active_listbox)
             self.listboxes[self.active_listbox].delete(self.listboxes[self.active_listbox].curselection())

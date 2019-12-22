@@ -6,18 +6,15 @@ from TaskList import TaskList
 class Brain:
     def __init__(self):
         self.todo = TaskList("todo")
-        self.prog = TaskList("prog")
+        self.prog = TaskList("doing")
+        self.awaiting = TaskList("awaiting")
         self.done = TaskList("done")
-        self.tl = [self.todo, self.prog, self.done]
+        self.tl = [self.todo, self.prog, self.awaiting, self.done]
 
 
     def restoreSession(self):
         for i in self.tl:
             i.readTasksFromFile()
-            print(i)
-            print(i.printTasks())
-            print("----")
-
 
     def remove_from_list(self, task_pos, list_inx):
         self.tl[list_inx].remove(task_pos)
