@@ -15,6 +15,22 @@ class Brain:
         self.tl[list_inx].remove(task_pos)
         self.tl[list_inx].writeTodoTasksToFile()
 
+    def updateOrder(self, tupleOrder, list_inx):
+        if not tupleOrder:
+            return
+        new_order = []
+
+        for i in tupleOrder:
+            for j in self.tl[list_inx].tasks:
+                if j.eq(i):
+                    new_order.append(j)
+                    break
+        self.tl[list_inx].tasks = new_order
+        self.tl[list_inx].writeTodoTasksToFile()
+
+        print(tupleOrder, list_inx)
+        print("toodelo")
+
     def getLists(self):
         return self.tl
 

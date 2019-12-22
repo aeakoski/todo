@@ -10,14 +10,14 @@ class Demo1:
     def __init__(self, master, brain):
         self.master = master
         self.brain = brain
-        self.frame = tk.Frame(self.master)
+        self.frame_top = tk.Frame(self.master)
         self.master.bind("n", self.new_task)
         self.master.bind("t", self.new_task)
         self.master.bind("q", self.quit)
         self.master.bind("<Escape>", self.quit)
         self.master.bind("<Delete>", self.remove)
-        self.frame.pack()
-        self.button1 = tk.Button(self.frame, text = 'New Task', width = 50, command = self.new_task)
+        self.frame_top.pack()
+        self.button1 = tk.Button(self.frame_top, text = 'New Task', width = 50, command = self.new_task)
         self.button1.pack()
         self.listboxes = []
         self.active_listbox = None
@@ -43,14 +43,14 @@ class Demo1:
     def initListbox(self):
         inx = 0
         for tl in self.brain.getLists():
-            w = tk.Label(self.master, text=tl.short)
+            lf = tk.Frame(self.master)
+            lf.pack(fill=tk.Y, side=tk.LEFT)
+            w = tk.Label(lf, text=tl.short)
             w.pack()
-            lbox = DragDropListbox(self.master, width=45, selectmode=tk.BROWSE)
-            b = inx
+            lbox = DragDropListbox(lf, self.brain, inx, width=45, selectmode=tk.BROWSE)
             for t in tl.tasks:
-                print(t.short)
-                lbox.insert("end", str(t.short))
-            lbox.pack()
+                lbox.insert("end", t)
+            lbox.pack(fill=tk.Y, expand=1)
             self.listboxes.append(lbox)
             lbox.bind('<<ListboxSelect>>',lambda x, _inx = inx : self.set_active_listbox(_inx))
             inx += 1

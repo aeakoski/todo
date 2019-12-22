@@ -8,7 +8,7 @@ class TaskList:
 
     def __init__(self, name):
         self.short = str(name)
-        self.path = "./data_" + self.short
+        self.path = "./" + self.short + ".data"
         self.tasks = []
     def __str__(self):
         return self.short + "\n"
@@ -65,8 +65,6 @@ class TaskList:
                     continue
                 # print(ord(c[-1]))
                 if os.name == "posix":
-                    print(c[-2])
-                    print(c[-3])
                     if c[-2] == chr(3): #One liner DESC
                         desc = c[1:-3]
                     else:

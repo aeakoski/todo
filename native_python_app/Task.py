@@ -9,9 +9,12 @@ class Task:
         self.state = str(state)
         self.pos = int(pos)
     def __str__(self):
-        return str(self.pos) + ". " + self.short + "\n" + "-" + "\n" + self.desc + "\n"
+        #return str(self.pos) + ". " + self.short + "\n" + "-" + "\n" + self.desc + "\n"
+        return self.short
     def __eq__(self, other):
         return self.pos == other
+    def eq(self, other):
+        return self.short == other
     def intersection(self, lst1, lst2):
         lst3 = [value for value in lst1 if value in lst2]
         return lst3
