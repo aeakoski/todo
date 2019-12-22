@@ -34,7 +34,7 @@ class TaskList:
     def writeTodoTasksToFile(self):
         with io.open(self.path, "w", encoding="utf-8") as fd:
             for t in self.tasks:
-                fd.write(t.storeTaskStr())
+                fd.write(t.storeTaskStr().decode("utf-8"))
     def readTasksFromFile(self):
         with io.open(self.path, "r", encoding="utf-8") as f:
             while True:

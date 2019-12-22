@@ -36,4 +36,6 @@ class Task:
         #     sh = self.short
         #     for c in inters:
         #         sh = sh.replace(c, chr())
-        return chr(1).encode("utf-8") + self.short.encode("utf-8") + "\n".encode("utf-8") + chr(5).encode("utf-8") + str(self.state).encode("utf-8") + "\n".encode("utf-8") + chr(6).encode("utf-8") + str(self.pos).encode("utf-8") + "\n".encode("utf-8") + chr(2).encode("utf-8") + self.desc.encode("utf-8") + chr(3).encode("utf-8") + "\n".encode("utf-8")
+
+        a = chr(1) + self.short + "\n" + chr(5) + str(self.state) + "\n" + chr(6) + str(self.pos) + "\n" + chr(2) + self.desc + chr(3) + "\n"
+        return a
