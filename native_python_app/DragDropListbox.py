@@ -11,6 +11,17 @@ class DragDropListbox(Tkinter.Listbox):
         self.bind('<B1-Motion>', self.shiftSelection)
         self.bind('<ButtonRelease-1>', lambda x: brain.updateOrder(self.get(0,self.size()), self.list_inx))
         self.curIndex = None
+        self._bg = self['bg']
+        # bind to focus events
+        self.bind('<FocusIn>', self._on_focus)
+        self.bind('<FocusOut>', self._on_lose_focus)
+
+
+    def _on_focus(self, event):
+        self.configure(bg="#30363F")
+
+    def _on_lose_focus(self, event):
+        self.configure(bg="#2C3037")
 
     def setCurrent(self, event):
         self.curIndex = self.nearest(event.y)

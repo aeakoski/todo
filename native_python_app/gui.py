@@ -20,6 +20,7 @@ class Demo1:
         self.master.bind("q", self.quit)
         self.master.bind("<Escape>", self.quit)
         self.master.bind("<Delete>", self.remove)
+        self.master.bind("<Tab>", self.clear_all)
         self.button1 = tk.Button(self.frame_top, text = 'New Task', width = 50, command = self.new_task)
         self.button1.configure(bg="#3E444F", fg="#DBDBDB", highlightbackground="#000000")
         self.button1.pack()
@@ -27,8 +28,13 @@ class Demo1:
         self.active_listbox = None
         self.initListbox()
 
+    def clear_all(self, event = None):
+        for l in self.listboxes:
+            l.select_clear(0, "end")
+
     def set_active_listbox(self, n):
         self.active_listbox = n
+
     def remove(self, event = None):
         if self.active_listbox == None:
             return
@@ -41,6 +47,8 @@ class Demo1:
             return
 
     def move_task_left(self, inx):
+        if not self.listboxes[inx].curselection():
+            return
         if 0 > inx-1:
             return
         try:
@@ -58,6 +66,8 @@ class Demo1:
 
 
     def move_task_right(self, inx):
+        if not self.listboxes[inx].curselection():
+            return
         if inx+1 > len(self.brain.getLists())-1:
             return
         try:
@@ -87,7 +97,7 @@ class Demo1:
             w.configure(bg="#262A2F", fg="#DBDBDB")
             w.pack()
             lbox = DragDropListbox(lf, self.brain, inx, height=25, width=45, selectmode=tk.BROWSE)
-            lbox.configure(bg="#2C3037", fg="#DBDBDB", highlightbackground="#000000")
+            lbox.configure(bg="#2C3037", fg="#DBDBDB", highlightcolor="#2C3037", highlightbackground="#000000")
             for t in tl.tasks:
                 lbox.insert("end", t)
             lbox.pack(fill=tk.Y, expand=1)
@@ -118,7 +128,7 @@ class Demo2:
     def submit_task(self, event = None):
         short = str(self.entry.get())
         self.other.brain.add_new(short, 0)
-        self.other.listboxes[0].insert("end", str(short))
+        self.other.listboxes[0].insert("end", self.other.brain.todo[-1])
         self.entry.delete(0, tk.END)
         self.master.destroy()
 
