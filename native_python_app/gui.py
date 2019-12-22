@@ -11,15 +11,20 @@ class Demo1:
         self.master = master
         self.brain = brain
         self.frame = tk.Frame(self.master)
+        self.master.bind("n", self.new_task)
+        self.master.bind("t", self.new_task)
+        self.master.bind("q", self.quit)
+        self.master.bind("<Escape>", self.quit)
         self.frame.pack()
         self.button1 = tk.Button(self.frame, text = 'New Task', width = 50, command = self.new_task)
         self.button1.pack()
         self.listboxes = []
         self.initListbox()
 
-    def new_task(self):
+    def new_task(self, _event = None):
         self.newTask = tk.Toplevel(self.master)
         self.app = Demo2(self.newTask, self)
+
     def initListbox(self):
         for tl in self.brain.getLists():
             w = tk.Label(self.master, text=tl.short)
@@ -34,11 +39,15 @@ class Demo1:
     def addToListbox(self, short):
         self.brain.add(short)
         self.listboxes[0].insert("end", str(short))
+    def quit(self, event = None):
+        self.master.destroy()
 
 
 class Demo2:
     def __init__(self, master, other):
         self.master = master
+        self.master.bind("<Escape>", self.quit)
+        self.master.bind("<Return>", self.submit_task)
         self.other = other
         self.frame = tk.Frame(self.master)
         self.frame.pack()
@@ -46,14 +55,16 @@ class Demo2:
         self.quitButton.pack()
         self.entry = tk.Entry(self.master)
         self.entry.pack()
+        self.entry.focus()
 
 
-    def submit_task(self):
+    def submit_task(self, event = None):
         short = str(self.entry.get())
         self.other.addToListbox(short)
         self.entry.delete(0, tk.END)
         self.master.destroy()
-
+    def quit(self, event = None):
+        self.master.destroy()
 # def main():
 #     root = tk.Tk()
 #     app = Demo1(root)
