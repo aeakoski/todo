@@ -5,7 +5,7 @@ sys.setdefaultencoding('utf8')
 
 import Tkinter as tk # Tkinter for python 2
 #import tkinter as tk # tkinter for python 3
-
+from DragDropListbox import DragDropListbox
 class Demo1:
     def __init__(self, master, brain):
         self.master = master
@@ -45,7 +45,7 @@ class Demo1:
         for tl in self.brain.getLists():
             w = tk.Label(self.master, text=tl.short)
             w.pack()
-            lbox = tk.Listbox(self.master, width=45, selectmode=tk.BROWSE)
+            lbox = DragDropListbox(self.master, width=45, selectmode=tk.BROWSE)
             b = inx
             for t in tl.tasks:
                 print(t.short)
