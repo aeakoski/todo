@@ -11,16 +11,23 @@ class TaskList:
         self.path = "./" + self.short + ".data"
         self.tasks = []
     def __str__(self):
-        return self.short + "\n"
-    def __len(self):
+        return self.short.capitalize()
+    def __len__(self):
         return len(self.tasks)
+    def __getitem__(self, n):
+        return self.tasks[n]
+
     def printTasks(self):
+        print(self.tasks)
         for t in self.tasks:
             print(t)
+        print("....")
     def add(self, short, desc="dd", pos = False, state="t"):
         if not pos:
             pos = len(self.tasks)
         t = Task(short=short, desc=desc, pos=pos, state=state)
+        print("adding tasks")
+        print(t)
         self.tasks.append(t)
     def remove(self, pos):
         if pos > len(self.tasks):
@@ -36,6 +43,12 @@ class TaskList:
             for t in self.tasks:
                 fd.write(t.storeTaskStr().decode("utf-8"))
     def readTasksFromFile(self):
+        try:
+            f = open(self.path, 'r')
+            f.close()
+        except IOError:
+            return
+
         with io.open(self.path, "r", encoding="utf-8") as f:
             while True:
                 c = f.readline()

@@ -10,7 +10,7 @@ class Task:
         self.pos = int(pos)
     def __str__(self):
         #return str(self.pos) + ". " + self.short + "\n" + "-" + "\n" + self.desc + "\n"
-        return self.short
+        return self.short.capitalize()
     def __eq__(self, other):
         return self.pos == other
     def eq(self, other):

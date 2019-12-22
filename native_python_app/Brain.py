@@ -9,7 +9,15 @@ class Brain:
         self.prog = TaskList("prog")
         self.done = TaskList("done")
         self.tl = [self.todo, self.prog, self.done]
-        self.todo.readTasksFromFile()
+
+
+    def restoreSession(self):
+        for i in self.tl:
+            i.readTasksFromFile()
+            print(i)
+            print(i.printTasks())
+            print("----")
+
 
     def remove_from_list(self, task_pos, list_inx):
         self.tl[list_inx].remove(task_pos)
@@ -25,17 +33,21 @@ class Brain:
                 if j.eq(i):
                     new_order.append(j)
                     break
+        for p in range(len(new_order)):
+            new_order[p].pos = p
         self.tl[list_inx].tasks = new_order
         self.tl[list_inx].writeTodoTasksToFile()
 
-        print(tupleOrder, list_inx)
-        print("toodelo")
 
     def getLists(self):
         return self.tl
 
-    def add(self, short):
-        self.todo.add(short)
-        self.todo.writeTodoTasksToFile()
+    def add_existing(self, _task, inx):
+        self.tl[inx].add(_task.short, _task.desc)
+        self.tl[inx].writeTodoTasksToFile()
+
+    def add_new(self, short, inx):
+        self.tl[inx].add(short)
+        self.tl[inx].writeTodoTasksToFile()
 
         #save listboxaswell
