@@ -8,7 +8,10 @@ class TaskList:
 
     def __init__(self, name):
         self.short = str(name)
-        self.path = "./data/" + self.short + ".data"
+        if os.name == "posix":
+            self.path = "./data/" + self.short + ".data"
+        else:
+            self.path = ".\\data\\" + self.short + ".data"
         self.tasks = []
     def __str__(self):
         return self.short.capitalize()
