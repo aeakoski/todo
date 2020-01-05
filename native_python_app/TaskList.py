@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import io
-
-from Task import Task
 import os
+from Task import Task
+
 class TaskList:
     """docstring for Task."""
 
@@ -42,7 +42,10 @@ class TaskList:
     def writeTodoTasksToFile(self):
         with io.open(self.path, "w", encoding="utf-8") as fd:
             for t in self.tasks:
-                fd.write(t.storeTaskStr().decode("utf-8"))
+                if os.name == "posix":
+                    fd.write(t.storeTaskStr().decode("utf-8"))
+                else:
+                    fd.write(t.storeTaskStr())
     def readTasksFromFile(self):
         try:
             f = open(self.path, 'r')

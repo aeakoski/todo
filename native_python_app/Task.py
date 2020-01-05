@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-
+import os
 class Task:
     """docstring for Task."""
 
     def __init__(self, short, desc, pos, state="t"):
-        self.short = short.encode("utf-8")
+        if os.name == "posix":
+            self.short = short.encode("utf-8")
+        else:
+            self.short = short
         self.desc = str(desc)
         self.state = str(state)
         self.pos = int(pos)
@@ -14,7 +17,7 @@ class Task:
     def __eq__(self, other):
         return self.pos == other
     def eq(self, other):
-        return self.short == other
+        return self.short.lower() == other.lower()
     def intersection(self, lst1, lst2):
         lst3 = [value for value in lst1 if value in lst2]
         return lst3

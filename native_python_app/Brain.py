@@ -30,6 +30,7 @@ class Brain:
                 if j.eq(i):
                     new_order.append(j)
                     break
+        assert len(new_order) == len(tupleOrder), "len(new_order) =" + str(len(new_order)) + " len(tupleOrder) =" + str(len(tupleOrder))
         for p in range(len(new_order)):
             new_order[p].pos = p
         self.tl[list_inx].tasks = new_order

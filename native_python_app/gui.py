@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 import sys
-reload(sys)
-sys.setdefaultencoding('utf8')
+import os
+try:
+    import Tkinter as tk # Tkinter for python 2
+except ImportError:
+    import tkinter as tk # tkinter for python 3
 
-import Tkinter as tk # Tkinter for python 2
-#import tkinter as tk # tkinter for python 3
+if os.name == "posix":
+    reload(sys)
+    sys.setdefaultencoding('utf8')
+
 from DragDropListbox import DragDropListbox
-class Demo1:
+class View_todo:
     def __init__(self, master, brain):
         self.master = master
         self.master.configure(bg="#262A2F")
@@ -83,7 +88,7 @@ class Demo1:
 
     def new_task(self, _event = None):
         self.newTask = tk.Toplevel(self.master)
-        self.app = Demo2(self.newTask, self)
+        self.app = View_new_task(self.newTask, self)
 
     def initListbox(self):
         inx = 0
@@ -109,17 +114,21 @@ class Demo1:
         self.master.destroy()
 
 
-class Demo2:
+class View_new_task:
     def __init__(self, master, other):
         self.master = master
+        self.master.configure(bg="#262A2F")
         self.master.bind("<Escape>", self.quit)
         self.master.bind("<Return>", self.submit_task)
         self.other = other
         self.frame = tk.Frame(self.master)
+        self.frame.configure(bg="#262A2F")
         self.frame.pack()
         self.quitButton = tk.Button(self.frame, text = 'Ok', width = 25, command = self.submit_task)
+        self.quitButton.configure(bg="#3E444F", fg="#DBDBDB", highlightbackground="#000000")
         self.quitButton.pack()
         self.entry = tk.Entry(self.master)
+        self.entry.configure(bg="#2C3037", fg="#DBDBDB", highlightcolor="#2C3037", highlightbackground="#000000")
         self.entry.pack()
         self.entry.focus()
 
@@ -134,7 +143,7 @@ class Demo2:
         self.master.destroy()
 # def main():
 #     root = tk.Tk()
-#     app = Demo1(root)
+#     app = View_todo(root)
 #     root.mainloop()
 #
 # if __name__ == '__main__':
